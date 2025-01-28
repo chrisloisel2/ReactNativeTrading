@@ -33,10 +33,6 @@ const Profile = () => {
 		fetchUser();
 	}, []);
 
-	if (!authslice.isAuthenticated) {
-		alert("Vous n'êtes pas connecté !");
-	}
-
 	if (loading) {
 		return <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />;
 	}
@@ -48,19 +44,10 @@ const Profile = () => {
 				source={{ uri: user?.profileImage }}
 			/>
 			<Text style={styles.name}>{user?.name || "Nom inconnu"}</Text>
-			<TextInput
-				style={styles.input}
-				value={text}
-				onChangeText={setText}
-				placeholder="Entrez votre texte ici"
-			/>
-			<Pressable onPress={() => setText('')}>
-				<Text>Reset</Text>
-			</Pressable>
 			<Text style={styles.email}>{user?.email || "Email inconnu"}</Text>
-			<Button title="Login" onPress={() => dispatch(login('admin'))} />
-			<Button title="Logout" onPress={() => dispatch(logout())} />
-			<Button title="Main Page" onPress={() => router.navigate('/')} />
+			<Pressable  style={styles.pressable}  onPress={() => router.navigate('/')}>
+				<Text>Main Page</Text>
+			</Pressable>
 		</View>
 	);
 };
@@ -101,6 +88,11 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		paddingHorizontal: 10,
 		marginBottom: 20,
+	},
+	pressable: {
+		backgroundColor: '#f0f0f0',
+		padding: 10,
+		borderRadius: 5,
 	},
 });
 
