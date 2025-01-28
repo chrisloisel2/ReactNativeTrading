@@ -1,20 +1,30 @@
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import { login } from '@/redux/slices/authSlice';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
 
 export default function HomeScreen() {
 	const router = useRouter();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
+	const authState = useAppSelector((state) => state.auth);
 
 	const handleLogin = async () => {
-		dispatch(login({ username, password }));
+		dispatch(login());
 		router.navigate('/profile');
 	};
+
+	if (authState.state === 'loading') {
+		return <Text>Loading...</Text>;
+	}
+
+	if (authState.state === 'failed') {
+		return <Text>Error: {authState.error}</Text>;
+	}
 
 	return (
 		<View style={styles.container}>
